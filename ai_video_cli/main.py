@@ -1,6 +1,7 @@
 import argparse
 import os
 from moviepy.editor import VideoFileClip, concatenate_videoclips, vfx
+from PIL import Image
 
 
 def get_video_codec(video):
@@ -86,6 +87,24 @@ def replace_audio(input_video, audio_video, output_file=None):
         print(f"Error: {e}")
 
 
+def generate_thumbnail(input_file, output_file=None):
+    try:
+        if output_file is None:
+            base_filename, _ = os.path.splitext(input_file)
+            output_file = f"{base_filename}_thumbnail.jpg"
+
+        video = VideoFileClip(input_file)
+        thumbnail = video.get_frame(0)  # Get the first frame
+        video.close()
+
+        # Save the thumbnail
+        Image.fromarray(thumbnail).save(output_file)
+
+        print(f"Thumbnail generated and saved as: {output_file}")
+    except Exception as e:
+        print(f"Error: {e}")
+
+
 def main():
     parser = argparse.ArgumentParser(description="AI Video Editor CLI Tool")
     subparsers = parser.add_subparsers(dest="command", help="Commands")
@@ -130,6 +149,17 @@ def main():
         help="Output video file with replaced audio (optional)",
     )
 
+    # Thumbnail command
+    thumbnail_parser = subparsers.add_parser(
+        "thumbnail", help="Generate a thumbnail from the first frame of a video"
+    )
+    thumbnail_parser.add_argument("input_file", help="Input video file")
+    thumbnail_parser.add_argument(
+        "output_file",
+        nargs="?",
+        help="Output thumbnail file (optional, default: <input_file>_thumbnail.jpg)",
+    )
+
     args = parser.parse_args()
 
     if args.command == "split":
@@ -138,6 +168,8 @@ def main():
         combine_videos(args.output_file, args.input_files, args.codec)
     elif args.command == "replace_audio":
         replace_audio(args.input_video, args.audio_video, args.output_file)
+    elif args.command == "thumbnail":
+        generate_thumbnail(args.input_file, args.output_file)
     else:
         parser.print_help()
 

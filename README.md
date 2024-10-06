@@ -1,6 +1,6 @@
 # AI Video Editor CLI Tool
 
-A CLI tool for simple video editing tasks: splitting videos, combining videos, and replacing audio. Very useful for working with video-to-video AI models like [Runway](https://runwayml.com/)
+A CLI tool for simple video editing tasks: splitting videos, combining videos, replacing audio, and generating thumbnails. Very useful for working with video-to-video AI models like [Runway](https://runwayml.com/)
 
 ## Getting Started
 
@@ -97,3 +97,21 @@ ai-video replace_audio original_video.mp4 audio_source.mp4 final_video.mp4
 This command will take the video from `original_video.mp4`, replace its audio with the audio from `audio_source.mp4`, and save the result as `final_video.mp4`.
 
 If you don't specify an output file, the tool will automatically generate one.
+
+### 4. Generate Thumbnail
+
+Generates a thumbnail image from the first frame of a video.
+
+```
+ai-video thumbnail <input_file> [--output_file <output_file>]
+```
+
+- `<input_file>`: Path to the input video file
+- `--output_file`: Optional path for the output thumbnail file (default: <input_file>_thumbnail.jpg)
+
+Example:
+```
+ai-video thumbnail my_video.mp4
+```
+
+This command will generate a thumbnail from the first frame of `my_video.mp4` and save it as `my_video_thumbnail.jpg`.
