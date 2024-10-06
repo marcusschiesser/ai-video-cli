@@ -1,6 +1,6 @@
 import argparse
 import os
-from moviepy.editor import VideoFileClip, concatenate_videoclips, AudioFileClip
+from moviepy.editor import VideoFileClip, concatenate_videoclips
 
 
 def split_video(input_file, chunk_size):

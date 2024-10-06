@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "ai-video-cli"
+version = "0.1.0"
+description = "AI Video Editor CLI Tool"
+authors = ["Marcus Schiesser <mail@marcusschiesser.de>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+moviepy = "^1.0.3"
+numpy = "^1.26.0"
+
+[tool.poetry.scripts]
+ai-video = "ai_video_cli.main:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
