@@ -13,6 +13,16 @@ def get_video_codec(video):
     return codec
 
 
+def get_audio_codec(audio_clip):
+    audio_codec = getattr(audio_clip, "audio_codec", None)
+    if not audio_codec:
+        print("Audio codec information not available. Using default 'aac'.")
+        audio_codec = "aac"
+    else:
+        print(f"Using audio codec: {audio_codec}")
+    return audio_codec
+
+
 def split_video(input_file, chunk_size):
     try:
         video = VideoFileClip(input_file)
@@ -54,9 +64,10 @@ def replace_audio(input_video, audio_video, output_file=None):
             output_file = f"{base_filename}_with_replaced_audio{ext}"
 
         video = VideoFileClip(input_video)
+        audio_clip = VideoFileClip(audio_video)
 
         # Get audio from the audio video and adjust duration to match video duration
-        audio = VideoFileClip(audio_video).audio
+        audio = audio_clip.audio
         if audio.duration > video.duration:
             audio = audio.subclip(0, video.duration)
         else:
@@ -65,11 +76,11 @@ def replace_audio(input_video, audio_video, output_file=None):
         # write video with new audio
         video_with_new_audio = video.set_audio(audio)
         video_with_new_audio.write_videofile(
-            output_file
-        )  # , codec=get_video_codec(video))
-        video.close()
-        audio.close()
-        video_with_new_audio.close()
+            output_file,
+            codec=get_video_codec(video),
+            audio_codec=get_audio_codec(audio_clip),
+        )
+
         print(f"Audio replaced. Output video saved as: {output_file}")
     except Exception as e:
         print(f"Error: {e}")
