@@ -1,11 +1,22 @@
 import argparse
 import os
-from moviepy.editor import VideoFileClip, concatenate_videoclips
+from moviepy.editor import VideoFileClip, concatenate_videoclips, vfx
+
+
+def get_video_codec(video):
+    codec = getattr(video, "codec", None)
+    if codec:
+        print(f"Input video codec: {codec}")
+    else:
+        print("Codec information not available. Using default 'libx264'.")
+        codec = "libx264"
+    return codec
 
 
 def split_video(input_file, chunk_size):
     try:
         video = VideoFileClip(input_file)
+        codec = get_video_codec(video)
         video_duration = video.duration
         base_filename, ext = os.path.splitext(input_file)
 
@@ -16,7 +27,7 @@ def split_video(input_file, chunk_size):
             end_time = min(start_time + chunk_size, video_duration)
             part_filename = f"{base_filename}_part{part_num}{ext}"
             video.subclip(start_time, end_time).write_videofile(
-                part_filename, codec=video.reader.codec
+                part_filename, codec=codec
             )
             print(f"Saved chunk: {part_filename}")
             start_time = end_time
@@ -29,7 +40,7 @@ def combine_videos(output_file, input_files, codec=None):
     try:
         video_clips = [VideoFileClip(file) for file in input_files]
         combined = concatenate_videoclips(video_clips)
-        codec = codec if codec else video_clips[0].reader.codec
+        codec = codec if codec else get_video_codec(video_clips[0])
         combined.write_videofile(output_file, codec=codec)
         print(f"Combined video saved as: {output_file}")
     except Exception as e:
@@ -43,9 +54,22 @@ def replace_audio(input_video, audio_video, output_file=None):
             output_file = f"{base_filename}_with_replaced_audio{ext}"
 
         video = VideoFileClip(input_video)
+
+        # Get audio from the audio video and adjust duration to match video duration
         audio = VideoFileClip(audio_video).audio
-        video = video.set_audio(audio)
-        video.write_videofile(output_file, codec=video.reader.codec)
+        if audio.duration > video.duration:
+            audio = audio.subclip(0, video.duration)
+        else:
+            audio = audio.fx(vfx.loop, duration=video.duration)
+
+        # write video with new audio
+        video_with_new_audio = video.set_audio(audio)
+        video_with_new_audio.write_videofile(
+            output_file
+        )  # , codec=get_video_codec(video))
+        video.close()
+        audio.close()
+        video_with_new_audio.close()
         print(f"Audio replaced. Output video saved as: {output_file}")
     except Exception as e:
         print(f"Error: {e}")

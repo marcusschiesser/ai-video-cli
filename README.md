@@ -23,9 +23,15 @@ A CLI tool for simple video editing tasks: splitting videos, combining videos, a
    poetry install 
    ```
 
-3. Run the tool:
+3. Open shell:
    ```
-   poetry run ai-video [command] [arguments]
+   poetry shell
+   ```
+
+4. Run the tool:
+   ```
+   cd <directory_with_videos>
+   ai-video [command] [arguments]
    ```
 
 ## Commands
@@ -37,7 +43,7 @@ The AI Video Editor CLI tool supports the following commands:
 Splits a video into chunks.
 
 ```
-poetry run ai-video split <input_file> [--chunk_size {5,10}]
+ai-video split <input_file> [--chunk_size {5,10}]
 ```
 
 - `<input_file>`: Path to the input video file
@@ -45,7 +51,7 @@ poetry run ai-video split <input_file> [--chunk_size {5,10}]
 
 Example:
 ```
-poetry run ai-video split my_long_video.mp4 --chunk_size 5
+ai-video split my_long_video.mp4 --chunk_size 5
 ```
 
 This command will split `my_long_video.mp4` into 5-second chunks. The output files will be named 
@@ -57,7 +63,7 @@ This command will split `my_long_video.mp4` into 5-second chunks. The output fil
 Combines multiple videos into one.
 
 ```
-poetry run ai-video combine <output_file> <input_files>... [--codec CODEC]
+ai-video combine <output_file> <input_files>... [--codec CODEC]
 ```
 
 - `<output_file>`: Path to the output video file
@@ -66,7 +72,7 @@ poetry run ai-video combine <output_file> <input_files>... [--codec CODEC]
 
 Example:
 ```
-poetry run ai-video combine final_video.mp4 part1.mp4 part2.mp4 part3.mp4
+ai-video combine final_video.mp4 part1.mp4 part2.mp4 part3.mp4
 ```
 
 This command will combine `part1.mp4`, `part2.mp4`, and `part3.mp4` into a single video file named `final_video.mp4`. The videos will be concatenated in the order they are specified.
@@ -76,7 +82,7 @@ This command will combine `part1.mp4`, `part2.mp4`, and `part3.mp4` into a singl
 Replaces the audio of a video with the audio from another video.
 
 ```
-poetry run ai-video replace_audio <input_video> <audio_video> [output_file]
+ai-video replace_audio <input_video> <audio_video> [output_file]
 ```
 
 - `<input_video>`: Path to the input video file whose audio will be replaced
@@ -85,7 +91,7 @@ poetry run ai-video replace_audio <input_video> <audio_video> [output_file]
 
 Example:
 ```
-poetry run ai-video replace_audio original_video.mp4 audio_source.mp4 final_video.mp4
+ai-video replace_audio original_video.mp4 audio_source.mp4 final_video.mp4
 ```
 
 This command will take the video from `original_video.mp4`, replace its audio with the audio from `audio_source.mp4`, and save the result as `final_video.mp4`.
