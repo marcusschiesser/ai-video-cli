@@ -115,3 +115,27 @@ ai-video thumbnail my_video.mp4
 ```
 
 This command will generate a thumbnail from the first frame of `my_video.mp4` and save it as `my_video_thumbnail.jpg`.
+
+### 5. Convert Video
+
+Converts a video to specific video and audio codecs, with optional cropping.
+
+```
+ai-video convert <input_file> [output_file] [--video_codec VIDEO_CODEC] [--audio_codec AUDIO_CODEC] [--crop_width CROP_WIDTH] [--crop_height CROP_HEIGHT]
+```
+
+- `<input_file>`: Path to the input video file
+- `[output_file]`: Optional path for the output video file (default: <input_file>_converted.<ext>)
+- `--video_codec`: Video codec to use (default: libx264)
+- `--audio_codec`: Audio codec to use (default: aac)
+- `--crop_width`: Width to crop the video (default: 1280)
+- `--crop_height`: Height to crop the video (default: 768)
+
+Example:
+```
+ai-video convert input_video.mp4 output_video.mp4 --video_codec libx265 --audio_codec mp3 --crop_width 1920 --crop_height 1080
+```
+
+This command will convert `input_video.mp4` to `output_video.mp4`, using the libx265 video codec and mp3 audio codec. It will also resize and crop the video to 1920x1080 pixels. If the input video's aspect ratio doesn't match 1920x1080, the video will be scaled to fit within these dimensions and centered.
+
+If you don't specify an output file, the tool will automatically generate one with the suffix "_converted" added to the input filename.

@@ -1,4 +1,5 @@
 import argparse
+import math
 import os
 from moviepy.editor import VideoFileClip, concatenate_videoclips, vfx
 from PIL import Image
@@ -105,6 +106,60 @@ def generate_thumbnail(input_file, output_file=None):
         print(f"Error: {e}")
 
 
+def convert_video(
+    input_file, output_file, video_codec, audio_codec, crop_width, crop_height
+):
+    try:
+        video = VideoFileClip(input_file)
+
+        # If output_file is not provided, create a default name
+        if output_file is None:
+            base_filename, ext = os.path.splitext(input_file)
+            output_file = f"{base_filename}_converted{ext}"
+
+        # Resize and crop the video if dimensions are provided
+        if crop_width and crop_height:
+            # Calculate the aspect ratios
+            target_aspect = crop_width / crop_height
+            video_aspect = video.w / video.h
+
+            if video_aspect > target_aspect:
+                # Video is wider, scale based on height
+                new_height = crop_height
+                new_width = int(math.ceil(new_height * video_aspect))
+            else:
+                # Video is taller, scale based on width
+                new_width = crop_width
+                new_height = int(math.ceil(new_width / video_aspect))
+
+            # Resize the video
+            resized_video = video.resize(height=new_height, width=new_width)
+
+            # Calculate padding
+            pad_x = max(0, (crop_width - new_width) // 2)
+            pad_y = max(0, (crop_height - new_height) // 2)
+
+            # Crop to final size
+            final_video = resized_video.crop(
+                x1=pad_x, y1=pad_y, width=crop_width, height=crop_height
+            )
+        else:
+            final_video = video
+
+        # Write the video file with specified codecs
+        final_video.write_videofile(
+            output_file, codec=video_codec, audio_codec=audio_codec
+        )
+
+        print(f"Video converted and saved as: {output_file}")
+        print(f"Video codec: {video_codec}")
+        print(f"Audio codec: {audio_codec}")
+        if crop_width and crop_height:
+            print(f"Video resized and cropped to: {crop_width}x{crop_height}")
+    except Exception as e:
+        print(f"Error: {e}")
+
+
 def main():
     parser = argparse.ArgumentParser(description="AI Video Editor CLI Tool")
     subparsers = parser.add_subparsers(dest="command", help="Commands")
@@ -160,6 +215,40 @@ def main():
         help="Output thumbnail file (optional, default: <input_file>_thumbnail.jpg)",
     )
 
+    # Convert command
+    convert_parser = subparsers.add_parser(
+        "convert",
+        help="Convert a video to specific video and audio codecs, with optional cropping",
+    )
+    convert_parser.add_argument("input_file", help="Input video file")
+    convert_parser.add_argument(
+        "output_file",
+        nargs="?",
+        help="Output video file (optional, default: <input_file>_converted.<ext>)",
+    )
+    convert_parser.add_argument(
+        "--video_codec",
+        default="libx264",
+        help="Video codec to use (default: libx264)",
+    )
+    convert_parser.add_argument(
+        "--audio_codec",
+        default="aac",
+        help="Audio codec to use (default: aac)",
+    )
+    convert_parser.add_argument(
+        "--crop_width",
+        type=int,
+        default=1280,
+        help="Width to crop the video (default: 1280)",
+    )
+    convert_parser.add_argument(
+        "--crop_height",
+        type=int,
+        default=768,
+        help="Height to crop the video (default: 768)",
+    )
+
     args = parser.parse_args()
 
     if args.command == "split":
@@ -170,6 +259,15 @@ def main():
         replace_audio(args.input_video, args.audio_video, args.output_file)
     elif args.command == "thumbnail":
         generate_thumbnail(args.input_file, args.output_file)
+    elif args.command == "convert":
+        convert_video(
+            args.input_file,
+            args.output_file,
+            args.video_codec,
+            args.audio_codec,
+            args.crop_width,
+            args.crop_height,
+        )
     else:
         parser.print_help()
 
