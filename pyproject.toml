@@ -7,13 +7,16 @@ readme = "README.md"
 packages = [{ include = "ai_video_cli" }]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.12"
+python = ">=3.10,<3.12"
 moviepy = "^1.0.3"
 numpy = "^1.26.0"
 pillow = "^9"
+opencv-python = "^4.10.0.84"
+ultralytics = "^8.3.13"
 
 [tool.poetry.scripts]
 ai-video = "ai_video_cli.main:main"
+ai-segment = "ai_video_cli.segment:main"
 
 [build-system]
 requires = ["poetry-core"]

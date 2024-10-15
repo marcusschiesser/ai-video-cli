@@ -139,3 +139,23 @@ ai-video convert input_video.mp4 output_video.mp4 --video_codec libx265 --audio_
 This command will convert `input_video.mp4` to `output_video.mp4`, using the libx265 video codec and mp3 audio codec. It will also resize and crop the video to 1920x1080 pixels. If the input video's aspect ratio doesn't match 1920x1080, the video will be scaled to fit within these dimensions and centered.
 
 If you don't specify an output file, the tool will automatically generate one with the suffix "_converted" added to the input filename.
+
+### 6. AI Segment Video
+
+Segments people in a video using AI models (YOLO and SAM2) and replaces the background with green.
+
+```
+ai-segment <input_file> <output_file>
+```
+
+- `<input_file>`: Path to the input video file
+- `<output_file>`: Path for the output segmented video file
+
+Example:
+```
+ai-segment input_video.mp4 segmented_output.mp4
+```
+
+This command will process `input_video.mp4` using YOLO for person detection and SAM2 for segmentation. It will create a new video `segmented_output.mp4` where all detected people are segmented, and the background is replaced with green.
+
+Note: This command requires additional AI models (YOLO and SAM2) which will be downloaded automatically on first use. The process may take some time depending on the length of the video and your hardware capabilities.
