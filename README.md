@@ -159,3 +159,21 @@ ai-segment input_video.mp4 segmented_output.mp4
 This command will process `input_video.mp4` using YOLO for person detection and SAM2 for segmentation. It will create a new video `segmented_output.mp4` where all detected people are segmented, and the background is replaced with green.
 
 Note: This command requires additional AI models (YOLO and SAM2) which will be downloaded automatically on first use. The process may take some time depending on the length of the video and your hardware capabilities.
+
+### 7. Extract Audio
+
+Extracts the audio from a video file.
+
+```
+ai-video extract_audio <input_file> [output_file]
+```
+
+- `<input_file>`: Path to the input video file
+- `[output_file]`: Optional path for the output audio file (default: <input_file>_audio.mp3)
+
+Example:
+```
+ai-video extract_audio my_video.mp4
+```
+
+This command will extract the audio from `my_video.mp4` and save it as `my_video_audio.mp3`. If you don't specify an output file, the tool will automatically generate one with the suffix "_audio.mp3" added to the input filename.

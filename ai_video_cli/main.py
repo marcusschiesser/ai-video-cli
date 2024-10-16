@@ -160,6 +160,26 @@ def convert_video(
         print(f"Error: {e}")
 
 
+def extract_audio(input_file, output_file=None):
+    try:
+        if output_file is None:
+            base_filename, _ = os.path.splitext(input_file)
+            output_file = f"{base_filename}_audio.mp3"
+
+        video = VideoFileClip(input_file)
+        audio = video.audio
+
+        # Extract audio
+        audio.write_audiofile(output_file)
+
+        video.close()
+        audio.close()
+
+        print(f"Audio extracted and saved as: {output_file}")
+    except Exception as e:
+        print(f"Error: {e}")
+
+
 def main():
     parser = argparse.ArgumentParser(description="AI Video Editor CLI Tool")
     subparsers = parser.add_subparsers(dest="command", help="Commands")
@@ -249,6 +269,17 @@ def main():
         help="Height to crop the video (default: 768)",
     )
 
+    # Extract audio command
+    extract_audio_parser = subparsers.add_parser(
+        "extract_audio", help="Extract audio from a video file"
+    )
+    extract_audio_parser.add_argument("input_file", help="Input video file")
+    extract_audio_parser.add_argument(
+        "output_file",
+        nargs="?",
+        help="Output audio file (optional, default: <input_file>_audio.mp3)",
+    )
+
     args = parser.parse_args()
 
     if args.command == "split":
@@ -268,6 +299,8 @@ def main():
             args.crop_width,
             args.crop_height,
         )
+    elif args.command == "extract_audio":
+        extract_audio(args.input_file, args.output_file)
     else:
         parser.print_help()
 
