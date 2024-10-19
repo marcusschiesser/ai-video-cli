@@ -34,6 +34,7 @@ def split_video(input_file, chunk_size):
 
         start_time = 0
         part_num = 1
+        split_files = []
 
         while start_time < video_duration:
             end_time = min(start_time + chunk_size, video_duration)
@@ -42,10 +43,14 @@ def split_video(input_file, chunk_size):
                 part_filename, codec=codec
             )
             print(f"Saved chunk: {part_filename}")
+            split_files.append(part_filename)
             start_time = end_time
             part_num += 1
+
+        return split_files
     except Exception as e:
         print(f"Error: {e}")
+        return []
 
 
 def combine_videos(output_file, input_files, codec=None):

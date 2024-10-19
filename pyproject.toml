@@ -13,10 +13,12 @@ numpy = "^1.26.0"
 pillow = "^9"
 opencv-python = "^4.10.0.84"
 ultralytics = "^8.3.13"
+gradio = "^5.1.0"
 
 [tool.poetry.scripts]
 ai-video = "ai_video_cli.main:main"
 ai-segment = "ai_video_cli.segment:main"
+ai-gradio = "ai_video_cli.gradio:launch"
 
 [build-system]
 requires = ["poetry-core"]
