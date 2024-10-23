@@ -1,3 +1,16 @@
+---
+title: Video Splitter
+emoji: 📚
+colorFrom: pink
+colorTo: pink
+sdk: gradio
+sdk_version: 5.3.0
+app_file: app.py
+pinned: false
+license: mit
+short_description: "Split videos into 5s or 10s chunks for usage with AI models "
+---
+
 # AI Video Editor CLI Tool
 
 A CLI tool for simple video editing tasks: splitting videos, combining videos, replacing audio, and generating thumbnails. Very useful for working with video-to-video AI models like [Runway](https://runwayml.com/)
@@ -13,17 +26,20 @@ A CLI tool for simple video editing tasks: splitting videos, combining videos, r
 ### Installation
 
 1. Clone this repository:
+
    ```
    git clone https://github.com/marcusschiesser/ai-video-cli.git
    cd ai-video-cli
    ```
 
 2. Install dependencies using Poetry:
+
    ```
-   poetry install 
+   poetry install
    ```
 
 3. Open shell:
+
    ```
    poetry shell
    ```
@@ -50,13 +66,13 @@ ai-video split <input_file> [--chunk_size {5,10}]
 - `--chunk_size`: Chunk size in seconds (default: 10)
 
 Example:
+
 ```
 ai-video split my_long_video.mp4 --chunk_size 5
 ```
 
-This command will split `my_long_video.mp4` into 5-second chunks. The output files will be named 
+This command will split `my_long_video.mp4` into 5-second chunks. The output files will be named
 `my_long_video_part1.mp4`, `my_long_video_part2.mp4`, and so on.
-
 
 ### 2. Combine Videos
 
@@ -71,6 +87,7 @@ ai-video combine <output_file> <input_files>... [--codec CODEC]
 - `--codec`: Optional codec to use for the output video (e.g., 'libx264')
 
 Example:
+
 ```
 ai-video combine final_video.mp4 part1.mp4 part2.mp4 part3.mp4
 ```
@@ -90,6 +107,7 @@ ai-video replace_audio <input_video> <audio_video> [output_file]
 - `[output_file]`: Optional path for the output video file with replaced audio
 
 Example:
+
 ```
 ai-video replace_audio original_video.mp4 audio_source.mp4 final_video.mp4
 ```
@@ -107,9 +125,10 @@ ai-video thumbnail <input_file> [--output_file <output_file>]
 ```
 
 - `<input_file>`: Path to the input video file
-- `--output_file`: Optional path for the output thumbnail file (default: <input_file>_thumbnail.jpg)
+- `--output_file`: Optional path for the output thumbnail file (default: <input_file>\_thumbnail.jpg)
 
 Example:
+
 ```
 ai-video thumbnail my_video.mp4
 ```
@@ -125,20 +144,21 @@ ai-video convert <input_file> [output_file] [--video_codec VIDEO_CODEC] [--audio
 ```
 
 - `<input_file>`: Path to the input video file
-- `[output_file]`: Optional path for the output video file (default: <input_file>_converted.<ext>)
+- `[output_file]`: Optional path for the output video file (default: <input_file>\_converted.<ext>)
 - `--video_codec`: Video codec to use (default: libx264)
 - `--audio_codec`: Audio codec to use (default: aac)
 - `--crop_width`: Width to crop the video (default: 1280)
 - `--crop_height`: Height to crop the video (default: 768)
 
 Example:
+
 ```
 ai-video convert input_video.mp4 output_video.mp4 --video_codec libx265 --audio_codec mp3 --crop_width 1920 --crop_height 1080
 ```
 
 This command will convert `input_video.mp4` to `output_video.mp4`, using the libx265 video codec and mp3 audio codec. It will also resize and crop the video to 1920x1080 pixels. If the input video's aspect ratio doesn't match 1920x1080, the video will be scaled to fit within these dimensions and centered.
 
-If you don't specify an output file, the tool will automatically generate one with the suffix "_converted" added to the input filename.
+If you don't specify an output file, the tool will automatically generate one with the suffix "\_converted" added to the input filename.
 
 ### 6. AI Segment Video
 
@@ -152,6 +172,7 @@ ai-segment <input_file> <output_file>
 - `<output_file>`: Path for the output segmented video file
 
 Example:
+
 ```
 ai-segment input_video.mp4 segmented_output.mp4
 ```
@@ -169,11 +190,12 @@ ai-video extract_audio <input_file> [output_file]
 ```
 
 - `<input_file>`: Path to the input video file
-- `[output_file]`: Optional path for the output audio file (default: <input_file>_audio.mp3)
+- `[output_file]`: Optional path for the output audio file (default: <input_file>\_audio.mp3)
 
 Example:
+
 ```
 ai-video extract_audio my_video.mp4
 ```
 
-This command will extract the audio from `my_video.mp4` and save it as `my_video_audio.mp3`. If you don't specify an output file, the tool will automatically generate one with the suffix "_audio.mp3" added to the input filename.
+This command will extract the audio from `my_video.mp4` and save it as `my_video_audio.mp3`. If you don't specify an output file, the tool will automatically generate one with the suffix "\_audio.mp3" added to the input filename.
