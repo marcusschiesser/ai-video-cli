@@ -27,6 +27,3 @@ iface = gr.Interface(
 
 def launch():
     iface.launch()
-
-if __name__ == "__main__":
-    launch()
