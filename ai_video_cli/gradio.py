@@ -1,5 +1,5 @@
 import gradio as gr
-from ai_video_cli.main import split_video
+from ai_video_cli.commands import split_video
 
 def split_video_interface(input_file, chunk_size):
     try:
