@@ -40,11 +40,11 @@ def main():
     # Replace audio command
     replace_audio_parser = subparsers.add_parser(
         "replace_audio",
-        help="Replace the audio of a video with the audio from another video",
+        help="Replace the audio of a video with an audio file",
     )
     replace_audio_parser.add_argument("input_video", help="Input video file")
     replace_audio_parser.add_argument(
-        "audio_video", help="Video file to take audio from"
+        "input_audio", help="Audio file to use as replacement"
     )
     replace_audio_parser.add_argument(
         "output_file",
@@ -115,7 +115,7 @@ def main():
     elif args.command == "combine":
         combine_videos(args.output_file, args.input_files, args.codec)
     elif args.command == "replace_audio":
-        replace_audio(args.input_video, args.audio_video, args.output_file)
+        replace_audio(args.input_video, args.input_audio, args.output_file)
     elif args.command == "thumbnail":
         generate_thumbnail(args.input_file, args.output_file)
     elif args.command == "convert":

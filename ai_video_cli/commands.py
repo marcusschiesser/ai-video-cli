@@ -1,6 +1,6 @@
 import math
 import os
-from moviepy.editor import VideoFileClip, concatenate_videoclips, vfx
+from moviepy.editor import VideoFileClip, concatenate_videoclips, vfx, AudioFileClip
 from PIL import Image
 
 def get_video_codec(video):
@@ -58,17 +58,16 @@ def combine_videos(output_file, input_files, codec=None):
     except Exception as e:
         print(f"Error: {e}")
 
-def replace_audio(input_video, audio_video, output_file=None):
+def replace_audio(input_video, input_audio, output_file=None):
     try:
         if output_file is None:
             base_filename, ext = os.path.splitext(input_video)
             output_file = f"{base_filename}_with_replaced_audio{ext}"
 
         video = VideoFileClip(input_video)
-        audio_clip = VideoFileClip(audio_video)
+        audio = AudioFileClip(input_audio)
 
-        # Get audio from the audio video and adjust duration to match video duration
-        audio = audio_clip.audio
+        # Adjust audio duration to match video duration
         if audio.duration > video.duration:
             audio = audio.subclip(0, video.duration)
         else:
@@ -79,7 +78,7 @@ def replace_audio(input_video, audio_video, output_file=None):
         video_with_new_audio.write_videofile(
             output_file,
             codec=get_video_codec(video),
-            audio_codec=get_audio_codec(audio_clip),
+            audio_codec=get_audio_codec(audio),
         )
 
         print(f"Audio replaced. Output video saved as: {output_file}")

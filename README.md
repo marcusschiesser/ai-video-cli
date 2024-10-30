@@ -96,25 +96,25 @@ This command will combine `part1.mp4`, `part2.mp4`, and `part3.mp4` into a singl
 
 ### 3. Replace Audio
 
-Replaces the audio of a video with the audio from another video.
+Replaces the audio of a video with an audio file.
 
 ```
-ai-video replace_audio <input_video> <audio_video> [output_file]
+ai-video replace_audio <input_video> <input_audio> [output_file]
 ```
 
 - `<input_video>`: Path to the input video file whose audio will be replaced
-- `<audio_video>`: Path to the video file from which the audio will be extracted
+- `<input_audio>`: Path to the audio file that will replace the original audio
 - `[output_file]`: Optional path for the output video file with replaced audio
 
 Example:
 
 ```
-ai-video replace_audio original_video.mp4 audio_source.mp4 final_video.mp4
+ai-video replace_audio original_video.mp4 background_music.mp3 final_video.mp4
 ```
 
-This command will take the video from `original_video.mp4`, replace its audio with the audio from `audio_source.mp4`, and save the result as `final_video.mp4`.
+This command will take the video from `original_video.mp4`, replace its audio with the audio from `background_music.mp3`, and save the result as `final_video.mp4`.
 
-If you don't specify an output file, the tool will automatically generate one.
+If you don't specify an output file, the tool will automatically generate one with the suffix "\_with_replaced_audio" added to the input filename.
 
 ### 4. Generate Thumbnail
 
